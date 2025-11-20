@@ -24,28 +24,37 @@ STEP-5: Read the characters row wise or column wise in the former order to get t
 
 # PROGRAM:
 ```
-message = input("Enter the message: ").replace(" ", "").upper()
+# -------- ENCRYPT --------
+msg = input("Enter the message: ").replace(" ", "").upper()
 rails = int(input("Enter number of rails: "))
-fence = [''] * rails
-row = 0
-down = True
 
-for char in message:
-    fence[row] += char
-    # Move down or up
-    if down:
-        row += 1
-    else:
-        row -= 1
-    if row == rails - 1 or row == 0:
-        down = not down
+zig = list(range(rails)) + list(range(rails-2, 0, -1))
+cipher = ""
+for r in range(rails):
+    for i, ch in enumerate(msg):
+        if zig[i % len(zig)] == r:
+            cipher += ch
 
-cipher_text = ''.join(fence)
-print("Encrypted Text:", cipher_text)
+print("Encrypted Text:", cipher)
+
+# -------- DECRYPT --------
+# Step 1: prepare zig-zag pattern
+pattern = [zig[i % len(zig)] for i in range(len(cipher))]
+
+# Step 2: fill letters rail-wise
+plain = [""] * len(cipher)
+idx = 0
+for r in range(rails):
+    for i in range(len(cipher)):
+        if pattern[i] == r:
+            plain[i] = cipher[idx]
+            idx += 1
+
+print("Decrypted Text:", "".join(plain))
 ```
 # OUTPUT:
 
-<img width="392" height="76" alt="image" src="https://github.com/user-attachments/assets/d4d44cfc-9cfe-4fa9-90a1-d017c66fff24" />
+<img width="260" height="95" alt="image" src="https://github.com/user-attachments/assets/a49c7461-d608-46a4-b577-738d856b2869" />
 
 # RESULT:
   Thus the implementation of vigenere cipher had been executed successfully.
